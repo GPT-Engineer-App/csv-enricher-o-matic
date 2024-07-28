@@ -38,11 +38,10 @@ const Index = () => {
   const enrichRow = async (row) => {
     const prompt = `Given this CSV row data: ${JSON.stringify(row)}\n\nProvide a brief description of this data:`;
     
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch('/api/enrich', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': API_KEY,
       },
       body: JSON.stringify({
         model: "claude-3-opus-20240229",
