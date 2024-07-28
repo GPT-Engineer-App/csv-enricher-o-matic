@@ -6,11 +6,6 @@ import { resolve } from "path";
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    proxy: {
-      '/api': 'http://localhost:3001'
-    }
-  },
-  server: {
     host: "::",
     port: "8080",
   },
