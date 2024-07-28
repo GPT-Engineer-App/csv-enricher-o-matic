@@ -12,6 +12,31 @@ const Index = () => {
   const [progress, setProgress] = useState(0);
   const [enrichedData, setEnrichedData] = useState(null);
 
+  const enrichRow = async (row) => {
+    const prompt = `Given this CSV row data: ${JSON.stringify(row)}\n\nProvide a brief description of this data:`;
+    
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model: "claude-3-opus-20240229",
+        max_tokens: 1000,
+        messages: [{ role: "user", content: prompt }]
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`API request failed: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data.content[0].text;
+  };
+
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile && selectedFile.type === "text/csv") {
